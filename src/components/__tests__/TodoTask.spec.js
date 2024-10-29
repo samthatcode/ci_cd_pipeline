@@ -4,9 +4,11 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import Todo from '@/components/Todo.vue';
 import { useTodoStore } from '@/stores/todoStore';
 
+// describe is used to group related tests.
 describe('TodoComponent', () => {
     let wrapper, todoStore;
 
+    // beforeEach and afterEach set up and clean up before and after each test.
     beforeEach(() => {
         setActivePinia(createPinia());
         todoStore = useTodoStore();
@@ -21,6 +23,7 @@ describe('TodoComponent', () => {
         wrapper.unmount();
     });
 
+    //it defines a single test case.
     it('adds a new todo item when addItem is called', async () => {
         todoStore.addTodo({
             id: 1,
@@ -29,7 +32,7 @@ describe('TodoComponent', () => {
         });
 
         // Verify todo was added to store
-        expect(todoStore.todos).toHaveLength(1);
+        expect(todoStore.todos).toHaveLength(1); // expect is used for assertions (checking if conditions are met).
         expect(todoStore.todos[0].value).toBe('New Task');
 
     });
@@ -48,10 +51,10 @@ describe('TodoComponent', () => {
     });
 
     it('deletes a todo item when deleteItem is called', async () => {
-        // todoStore.addTodo({ id: 1, value: 'Delete Task', completed: false });
+        // vi is a Vitest object for mocking functions, which is useful for simulating behaviors (e.g., browser confirmations).
         window.confirm = vi.fn(() => true); // Mock confirm dialog
         wrapper.vm.deleteItem(0);
         expect(todoStore.todos.length).toBe(0);
     });
- 
+
 });

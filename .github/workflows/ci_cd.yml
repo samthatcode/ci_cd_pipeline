@@ -3,10 +3,7 @@ name: CI/CD Pipeline
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-
-  push:
-    branches: ["main"]
+  # Triggers the workflow on pull request events but only for the "main" branch
 
   pull_request:
     branches:
@@ -20,7 +17,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     name:
-      BUild and deploy CI_CD Test GitHub Actions
+      Build and deploy CI_CD Test GitHub Actions
 
       # The type of runner that the job will run on
     runs-on:
@@ -46,3 +43,19 @@ jobs:
 
       - name: Build project
         run: npm run build
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      deployments: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: JorgeLNJunior/render-deploy@v1.4.4
+        with:
+          service_id: ${{ secrets.RENDER_SERVICE_ID }}
+          api_key: ${{ secrets.RENDER_API_KEY }}
+          clear_cache: true
+          wait_deploy: true
+          github_deployment: true
+          deployment_environment: "production"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
