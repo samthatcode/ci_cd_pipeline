@@ -29,6 +29,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Dependencies
+        run: npm ci  # This will install vitest along with all other dependencies
+
         # Run unit tests before building
       - name: Run Tests
         run: npm run test:unit
