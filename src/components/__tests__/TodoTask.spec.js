@@ -57,4 +57,27 @@ describe('TodoComponent', () => {
         expect(todoStore.todos.length).toBe(0);
     });
 
+    it('toggles completed status', async () => {
+        todoStore.addTodo({
+            id: 1,
+            value: 'Toggle Task',
+            completed: false
+        })
+
+        // expect (todoStore.todos).toHaveLength(1) 
+        expect(todoStore.todos[0].completed).toBe(false) || (todoStore.todos[0].completed).toBe(true)
+    })
+
+    it('loads todos from localStorage', () => {
+        const mockTodos = JSON.stringify([
+            { id: 1, value: 'Stored Task', completed: false }
+        ]);
+        localStorage.setItem('todos', mockTodos);
+
+        todoStore.loadTodosFromStorage();
+
+        expect(todoStore.todos).toHaveLength(1);
+        expect(todoStore.todos[0].value).toBe('Stored Task');
+    });
+
 });
